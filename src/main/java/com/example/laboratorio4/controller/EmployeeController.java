@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -38,9 +39,21 @@ public class EmployeeController {
         return "employee/lista";
     }
 
+    public List<Employees> getListaJefes() {
+        List<Employees> listaJefes = employeesRepository.findAll();
+        Employees e = new Employees();
+        e.setEmployeeId(0);
+        e.setFirstName("--No tiene Jefe--");
+        listaJefes.add(0, e);
+        return listaJefes;
+    }
+
     @GetMapping("/new")
-    public String nuevoEmployeeForm() {
+    public String nuevoEmployeeForm(Model model) {
         //COMPLETAR
+        model.addAttribute("listaDepartments", departmentsRepository.findAll());
+        model.addAttribute("listaJobs", jobsRepository.findAll());
+        model.addAttribute("listaJefes", getListaJefes());
         return "employee/Frm";
     }
 
@@ -56,7 +69,7 @@ public class EmployeeController {
             return "employee/Frm";
         }else {
 
-            if (employees.getEmployeeid() == 0) {
+            if (employees.getEmployeeId() == 0) {
                 attr.addFlashAttribute("msg", "Empleado creado exitosamente");
                 employees.setHiredate(new Date());
                 employeesRepository.save(employees);

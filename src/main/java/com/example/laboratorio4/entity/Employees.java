@@ -19,7 +19,7 @@ public class Employees {
     private String email;
     private String password;
     private float salary;
-
+    private Date hiredate;
     @Column(nullable = true)
     private Integer managerId;
 
@@ -30,6 +30,14 @@ public class Employees {
     @ManyToOne
     @JoinColumn(name = "job_id")
     private Jobs job;
+
+    public Date getHiredate() {
+        return hiredate;
+    }
+
+    public void setHiredate(Date hiredate) {
+        this.hiredate = hiredate;
+    }
 
     public Integer getEmployeeId() {
         return employeeId;
