@@ -1,4 +1,5 @@
 package com.example.laboratorio4.controller;
+
 import com.example.laboratorio4.entity.Employees;
 import com.example.laboratorio4.repository.DepartmentsRepository;
 import com.example.laboratorio4.repository.EmployeesRepository;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -30,46 +32,55 @@ public class EmployeeController {
     @Autowired
     DepartmentsRepository departmentsRepository;
 
-    @GetMapping(value = {"","/"})
-    public String listaEmployee(Model model){
+    @GetMapping(value = {"", "/"})
+    public String listaEmployee(Model model) {
         model.addAttribute("listaEmployee", employeesRepository.findAll());
         model.addAttribute("listaJobs", jobsRepository.findAll());
         model.addAttribute("listaDepartments", departmentsRepository.findAll());
         return "employee/lista";
     }
 
+    public List<Employees> getListaJefes() {
+        List<Employees> listaJefes = employeesRepository.findAll();
+        return listaJefes;
+    }
+
     @GetMapping("/new")
-    public String nuevoEmployeeForm() {
+    public String nuevoEmployeeForm(@ModelAttribute("employees") Employees employee, Model model) {
         //COMPLETAR
+        model.addAttribute("listaDepartments", departmentsRepository.findAll());
+        model.addAttribute("listaJobs", jobsRepository.findAll());
+        model.addAttribute("listaJefes", getListaJefes());
         return "employee/Frm";
     }
-    /*
 
     @PostMapping("/save")
     public String guardarEmployee(@ModelAttribute("employees") @Valid Employees employees, BindingResult bindingResult,
                                   RedirectAttributes attr,
-                                  @RequestParam(name="fechaContrato", required=false) String fechaContrato, Model model) {
-
-        if(bindingResult.hasErrors()){
+                                  @RequestParam(name = "fechaContrato", required = false) String fechaContrato, Model model) {
+        int id = 0;
+        if (employees.getEmployeeId() != null) {
+            id = employees.getEmployeeId();
+        }
+        List<Employees> employees1 = employeesRepository.findEmployeesByEmailAndEmployeeIdNot(employees.getEmail(), id);
+        System.out.println(employees1.size());
+        if (!employees1.isEmpty()) {
+            bindingResult.rejectValue("email", "error.Employees", "No puedes colocar un correo existente");
+        }
+        if (bindingResult.hasErrors()) {
             model.addAttribute("listaJobs", jobsRepository.findAll());
             model.addAttribute("listaJefes", employeesRepository.findAll());
             model.addAttribute("listaDepartments", departmentsRepository.findAll());
             return "employee/Frm";
-        }else {
-
-            if (employees.getEmployeeid() == 0) {
+        } else {
+            System.out.println(employees.getFirstName());
+            employees.setHiredate(new Date());
+            if (employees.getEmployeeId() == null) {
                 attr.addFlashAttribute("msg", "Empleado creado exitosamente");
-                employees.setHiredate(new Date());
                 employeesRepository.save(employees);
                 return "redirect:/employee";
+
             } else {
-
-                try {
-                    employees.setHiredate(new SimpleDateFormat("yyyy-MM-dd").parse(fechaContrato));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
                 employeesRepository.save(employees);
                 attr.addFlashAttribute("msg", "Empleado actualizado exitosamente");
                 return "redirect:/employee";
@@ -78,37 +89,42 @@ public class EmployeeController {
     }
 
 
-
     @GetMapping("/edit")
-    public String editarEmployee() {
-
+    public String editarEmployee(@ModelAttribute("employees") Employees employee, Model model,
+                                 @RequestParam("id") int id) {
         //COMPLETAR
+        Optional<Employees> optionalEmployees = employeesRepository.findById(id);
+        if (optionalEmployees.isPresent()) {
+            model.addAttribute("listaJobs", jobsRepository.findAll());
+            model.addAttribute("listaJefes", employeesRepository.findAll());
+            model.addAttribute("listaDepartments", departmentsRepository.findAll());
+            employee = optionalEmployees.get();
+            model.addAttribute("employees", employee);
+            return "employee/Frm";
+        } else {
+            return "redirect:/employee";
+        }
     }
 
     @GetMapping("/delete")
     public String borrarEmpleado(Model model,
-                                      @RequestParam("id") int id,
-                                      RedirectAttributes attr) {
+                                 @RequestParam("id") int id,
+                                 RedirectAttributes attr) {
 
         Optional<Employees> optEmployees = employeesRepository.findById(id);
 
         if (optEmployees.isPresent()) {
             employeesRepository.deleteById(id);
-            attr.addFlashAttribute("msg","Empleado borrado exitosamente");
+            attr.addFlashAttribute("msg", "Empleado borrado exitosamente");
         }
         return "redirect:/employee";
 
     }
-
+/*
     @PostMapping("/search")
     public String buscar (){
 
         //COMPLETAR
     }
-
-     */
-
-
-
-
+*/
 }

@@ -36,6 +36,7 @@ public interface EmployeesRepository extends JpaRepository<Employees,Integer> {
             "inner join jobs j on e.job_id=j.job_id  where j.job_id=?1 order by e.employee_id desc;",nativeQuery = true)
     List<EmployeeInfo> informacionXJobid(String jobId);
 
+    List<Employees> findEmployeesByEmailAndEmployeeIdNot(String email,int id);
 
     @Query(value = "select e.first_name , e.last_name,j.job_title,date(jh.start_date) as start_date ,date(jh.end_date) as end_date\n" +
             ",round(datediff(jh.end_date,jh.start_date)/365)  as aniofrom  employees e \n" +

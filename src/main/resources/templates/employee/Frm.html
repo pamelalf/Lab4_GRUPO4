@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <title th:text="${employees.getEmployeeId() == null ? 'NUEVO EMPLEADO' : 'EDITAR EMPLEADO'}"></title>
+</head>
+<body>
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-12 ">
+            <h2 th:text="${employees.employeeId == null? 'NUEVO EMPLEADO' : 'EDITAR EMPLEADO'}"></h2>
+            <hr/>
+            <form th:action="@{'/employee/save'}" method="post" th:object="${employees}">
+                <div class="row">
+                        <input type="hidden" th:field="*{employeeId}">
+
+                <div class="mb-3 col-6">
+                    <label for="firstName" class="form-label">Nombre</label>
+                    <input type="text" class="form-control" th:field="*{firstName}" />
+                    <h1 style="color: red; font-size: small; text-align: left" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></h1>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="lastName" class="form-label">Apellido</label>
+                    <input type="text" class="form-control" th:field="*{lastName}"/>
+                    <h1 style="color: red; font-size: small; text-align: left" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></h1>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <input type="text" class="form-control" th:field="*{email}"/>
+                    <h1 style="color: red; font-size: small; text-align: left" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></h1>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" class="form-control" placeholder="" th:field="*{password}"/>
+                    <h1 style="color: red; font-size: small; text-align: left" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></h1>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="job" class="form-label">Cargo</label>
+                    <select class="form-control" name="job" id="job">
+                        <option th:each="cargo : ${listaJobs}"
+                                th:selected="${employees.job != null and (cargo.jobid == employees.job.getJobid())}"
+                                th:text="|${cargo.getJobtitle()}|"
+                                th:value="${cargo.getJobid()}"></option>
+                    </select>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="salary" class="form-label">Sueldo</label>
+                    <input type="text" class="form-control" th:field="*{salary}"/>
+                    <h1 style="color: red; font-size: small; text-align: left" th:if="${#fields.hasErrors('salary')}" th:errors="*{salary}"></h1>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="managerId" class="form-label">Jefe</label>
+                    <select class="form-control" name="managerId" id="managerId">
+                        <option th:each="jefe : ${listaJefes}"
+                                th:selected="${employees.manager != null and (jefe.getEmployeeId() == employees.manager.getEmployeeId())}"
+                                th:text="|${jefe.getFirstName()} ${jefe.lastName==null?'':jefe.lastName}|"
+                                th:value="${jefe.getEmployeeId()}"></option>
+                    </select>
+                </div>
+                <div class="mb-3 col-6">
+                    <label for="department" class="form-label">Departamento</label>
+                    <select class="form-control" name="department" id="department">
+                        <option th:each="departamento : ${listaDepartments}"
+                                th:selected="${employees.department != null and (departamento.id == employees.department.getId())}"
+                                th:text="|${departamento.getDepartmentname()}|"
+                                th:value="${departamento.getId()}"></option>
+                    </select>
+                </div>
+                <a th:href="@{'/employee'}" class="btn btn-danger mx-2">Cancelar</a>
+                <button type="submit" class="btn btn-primary mx-2" th:text="${employees.getEmployeeId() == null ? 'Registrar' : 'Editar'}"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
