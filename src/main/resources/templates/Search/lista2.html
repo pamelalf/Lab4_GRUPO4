@@ -11,13 +11,32 @@
 <body>
 <div class="container">
     <h1>Empleados con Mayor Salario en la Empresa</h1>
-    <!-- COMPLETAR -->
+    <form method="post" th:action="@{/Search/busqueda}">
+        <input name="searchField" class="form-control mb-3" type="text" placeholder="Search"/>
+    </form>
     <table class="table">
         <thead>
-        <!-- COMPLETAR -->
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Fecha de Inicio</th>
+            <th>Fecha Fin</th>
+            <th>Puesto</th>
+            <th></th>
+        </tr>
         </thead>
         <tbody>
-        <!-- COMPLETAR -->
+        <tr th:each="employee : ${listaEmpleadosxSueldo}">
+            <td th:text="${employee.getFirst_name()}"></td>
+            <td th:text="${employee.getLast_name()}"></td>
+            <td th:text="${employee.getStart_date()}"></td>
+            <td th:text="${employee.getEnd_date()}"></td>
+            <td th:text="${employee.getJob_title()}"></td>
+            <td><a class="btn btn-primary"
+                   th:href="@{'/employee/edit' + '?id=' + ${employee.getEmployee_id()}}">Editar</a>
+            </td>
+        </tr>
+
         </tbody>
     </table>
 </div>

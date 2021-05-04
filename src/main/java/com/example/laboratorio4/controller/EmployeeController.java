@@ -56,6 +56,7 @@ public class EmployeeController {
         model.addAttribute("listaJefes", getListaJefes());
         return "employee/Frm";
     }
+    /*
 
     @PostMapping("/save")
     public String guardarEmployee(@ModelAttribute("employees") @Valid Employees employees, BindingResult bindingResult,
@@ -89,6 +90,8 @@ public class EmployeeController {
         }
     }
 
+
+
     @GetMapping("/edit")
     public String editarEmployee() {
 
@@ -115,5 +118,10 @@ public class EmployeeController {
 
         //COMPLETAR
     }
+
+     */
+
+
+
 
 }
