@@ -1,14 +1,12 @@
 package com.example.laboratorio4.dto;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public interface ListaEmpleadosxSueldo {
-    int getEmployee_id();
+public interface RecursosHumanos {
     String getFirst_name();
     String getLast_name();
+    String getJob_title();
     LocalDate getStart_date();
     LocalDate getEnd_date();
-    String getJob_title();
-
+    int getAnios();
 }

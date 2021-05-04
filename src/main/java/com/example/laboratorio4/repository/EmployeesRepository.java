@@ -2,6 +2,7 @@ package com.example.laboratorio4.repository;
 
 import com.example.laboratorio4.dto.EmployeeInfo;
 import com.example.laboratorio4.dto.ListaEmpleadosxSueldo;
+import com.example.laboratorio4.dto.RecursosHumanos;
 import com.example.laboratorio4.dto.SalarioMaxXDpto;
 import com.example.laboratorio4.entity.Employees;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,6 +35,15 @@ public interface EmployeesRepository extends JpaRepository<Employees,Integer> {
     @Query(value = "select e.employee_id , e.first_name , e.last_name, j.job_title, e.salary from employees e \n" +
             "inner join jobs j on e.job_id=j.job_id  where j.job_id=?1 order by e.employee_id desc;",nativeQuery = true)
     List<EmployeeInfo> informacionXJobid(String jobId);
+
+
+    @Query(value = "select e.first_name , e.last_name,j.job_title,date(jh.start_date) as start_date ,date(jh.end_date) as end_date\n" +
+            ",round(datediff(jh.end_date,jh.start_date)/365)  as aniofrom  employees e \n" +
+            "inner join job_history jh  on e.employee_id=jh.employee_id\n" +
+            "inner join jobs j on j.job_id= e.job_id order by e.employee_id asc;", nativeQuery = true)
+    List<RecursosHumanos> inforRecursosH();
+
+
 
 
 
