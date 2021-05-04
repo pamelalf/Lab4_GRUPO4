@@ -4,6 +4,8 @@ import com.sun.istack.Nullable;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -11,24 +13,44 @@ import java.util.Date;
 public class Employees {
 
     @Id
+    @Column(name="employee_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer employeeId;
+    @Column(name="first_name")
+    @NotBlank(message = "no puede estar vacío")
     private String firstName;
+    @Column(name="last_name")
+    @NotBlank(message = "no puede estar vacío")
     private String lastName;
 
+    @NotBlank(message = "no puede estar vacío")
+    @Email(message="Debe tener el formato nombre@correo.com")
     private String email;
+
+    @NotBlank(message = "No debe ser vacío o blanco")
+    @Size(min = 8, message = "Ingrese como mínimo 8 caracteres")
     private String password;
-    private float salary;
+
+    @NotNull(message = "no puede estar vacío")
+    @Min(value = 0, message = "Tiene que ser mayor a 0")
+    @Digits(message = "Debe ser un número", integer = 8, fraction = 2)
+    private BigDecimal salary;
+
+    @Column(name="hire_date")
     private Date hiredate;
-    @Column(nullable = true)
-    private Integer managerId;
+
+    @ManyToOne
+    @JoinColumn(name = "manager_id")
+    private Employees manager;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
-    private Departments departament;
+    @NotNull(message = "no puede estar vacío")
+    private Departments department;
 
     @ManyToOne
     @JoinColumn(name = "job_id")
+    @NotNull(message = "no puede estar vacío")
     private Jobs job;
 
     public Date getHiredate() {
@@ -63,12 +85,12 @@ public class Employees {
         this.lastName = lastName;
     }
 
-    public Departments getDepartament() {
-        return departament;
+    public Departments getDepartment() {
+        return department;
     }
 
-    public void setDepartament(Departments departament) {
-        this.departament = departament;
+    public void setDepartment(Departments department) {
+        this.department = department;
     }
 
     public Jobs getJob() {
@@ -87,22 +109,21 @@ public class Employees {
         this.password = password;
     }
 
-    public float getSalary() {
+    public BigDecimal getSalary() {
         return salary;
     }
 
-    public void setSalary(float salary) {
+    public void setSalary(BigDecimal salary) {
         this.salary = salary;
     }
 
-    public Integer getManagerId() {
-        return managerId;
+    public Employees getManager() {
+        return manager;
     }
 
-    public void setManagerId(Integer managerId) {
-        this.managerId = managerId;
+    public void setManager(Employees manager) {
+        this.manager = manager;
     }
-
 
     public String getEmail() {
         return email;

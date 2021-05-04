@@ -35,6 +35,7 @@ public interface EmployeesRepository extends JpaRepository<Employees,Integer> {
             "inner join jobs j on e.job_id=j.job_id  where j.job_id=?1 order by e.employee_id desc;",nativeQuery = true)
     List<EmployeeInfo> informacionXJobid(String jobId);
 
+    List<Employees> findEmployeesByEmailAndEmployeeIdNot(String email,int id);
 
 
 
