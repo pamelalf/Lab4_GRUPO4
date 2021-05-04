@@ -24,7 +24,7 @@ public class Employees {
     private String lastName;
 
     @NotBlank(message = "no puede estar vacío")
-    @Email(message="Debe tener el formato nombre@correo.com")
+    @Pattern(regexp = "[^@]+@[^\\.]+\\..+",message = "Debe tener el formato nombre@correo.com")
     private String email;
 
     @NotBlank(message = "No debe ser vacío o blanco")
