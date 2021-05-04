@@ -6,7 +6,7 @@ public interface RecursosHumanos {
     String getFirst_name();
     String getLast_name();
     String getJob_title();
-    LocalDate getStart_date();
-    LocalDate getEnd_date();
+    String getSdate();
+    String getEdate();
     int getAnios();
 }

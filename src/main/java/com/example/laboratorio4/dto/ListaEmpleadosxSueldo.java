@@ -7,8 +7,8 @@ public interface ListaEmpleadosxSueldo {
     int getEmployee_id();
     String getFirst_name();
     String getLast_name();
-    LocalDate getStart_date();
-    LocalDate getEnd_date();
+    String getStart_date();
+    String getEnd_date();
     String getJob_title();
 
 }

@@ -11,9 +11,16 @@
 <body>
 <div class="container">
     <h1>Empleados con Mayor Salario en la Empresa</h1>
-    <form method="post" th:action="@{/Search/busqueda}">
-        <input name="searchField" class="form-control mb-3" type="text" placeholder="Search"/>
+    <form class="form-inline mb-3" method="post" th:action="@{/Search/busqueda}">
+        <div class="container-md">
+            <div class="input-group mb-2">
+                <input class="form-control mr-2" placeholder="Search" name="searchName">
+                <button class="btn btn-outline-info" type="submit">Buscar</button>
+                <a class="btn btn-outline-danger" th:href="@{/Search/Salario}">Limpiar</a>
+            </div>
+        </div>
     </form>
+
     <table class="table">
         <thead>
         <tr>

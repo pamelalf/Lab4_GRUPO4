@@ -25,8 +25,8 @@ public interface EmployeesRepository extends JpaRepository<Employees,Integer> {
             "from  employees e \n" +
             "inner join job_history jh on e.employee_id=jh.employee_id\n" +
             "inner join jobs j on e.job_id=j.job_id \n" +
-            "where e.salary = ?1", nativeQuery = true)
-    List<ListaEmpleadosxSueldo> busquedaEmpleado(BigDecimal searchField);
+            "where e.salary like ?1", nativeQuery = true)
+    List<ListaEmpleadosxSueldo> busquedaEmpleado(BigDecimal searchName);
 
     @Query(value="select e.job_id,d.department_id,d.department_name,round(avg(e.salary)) as salary_prom from departments d \n" +
             "            inner join employees e on e.department_id= d.department_id group by d.department_id order by  salary_prom desc;",nativeQuery = true)
@@ -38,8 +38,8 @@ public interface EmployeesRepository extends JpaRepository<Employees,Integer> {
 
     List<Employees> findEmployeesByEmailAndEmployeeIdNot(String email,int id);
 
-    @Query(value = "select e.first_name , e.last_name,j.job_title,date(jh.start_date) as start_date ,date(jh.end_date) as end_date\n" +
-            ",round(datediff(jh.end_date,jh.start_date)/365)  as aniofrom  employees e \n" +
+    @Query(value = "select e.first_name , e.last_name,j.job_title,date(jh.start_date) as sdate ,date(jh.end_date) as edate\n" +
+            ",round(datediff(jh.end_date,jh.start_date)/365)  as anios from  employees e \n" +
             "inner join job_history jh  on e.employee_id=jh.employee_id\n" +
             "inner join jobs j on j.job_id= e.job_id order by e.employee_id asc;", nativeQuery = true)
     List<RecursosHumanos> inforRecursosH();

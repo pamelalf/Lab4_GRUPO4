@@ -29,8 +29,8 @@ public class SearchController {
     }
 
     @PostMapping("/busqueda")
-    public String buscar (@RequestAttribute("searchField") BigDecimal searchField, Model model){
-        model.addAttribute("listaEmpleadosxSueldo",employeesRepository.busquedaEmpleado(searchField));
+    public String buscar (@RequestAttribute("searchName") BigDecimal searchName, Model model){
+        model.addAttribute("listaEmpleadosxSueldo",employeesRepository.busquedaEmpleado(searchName));
 
         return "Search/lista2";
     }

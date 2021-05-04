@@ -30,7 +30,7 @@
                 <td th:text="${employee.getJob_title()}"></td>
                 <td th:text="${employee.getSalary()}"></td>
                     <td><a class="btn btn-primary"
-                           th:href="@{'/Search/listar' + '?id=' + ${employee.getEmployee_id()}}">Info</a>
+                           th:href="@{'/employee/edit' + '?id=' + ${employee.getEmployee_id()}}">Editar</a>
                     </td>
                 </tr>
                 </tbody>
