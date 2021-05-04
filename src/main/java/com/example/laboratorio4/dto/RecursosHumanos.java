@@ -9,4 +9,5 @@ public interface RecursosHumanos {
     String getSdate();
     String getEdate();
     int getAnios();
+    int getMeses();
 }
